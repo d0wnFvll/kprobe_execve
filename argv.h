@@ -5,7 +5,7 @@ bool argv_dump_page(struct linux_binprm *bprm, unsigned long pos,
 {
 	struct page *page;
 
-	/* dump->data is released by tomoyo_find_next_domain(). */
+	/* dump should be released on your own. */
 	if (!dump) {
 		dump = kzalloc(PAGE_SIZE, GFP_NOFS);
 		if (!dump)
