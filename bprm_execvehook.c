@@ -1,5 +1,9 @@
 #define pr_fmt(fmt) "%s: " fmt, __func__
 
+#if LINUX_VERSION_CODE < LINUX_VERSION(5, 9, 0)
+#error "Kernel versions less then 5.9.0 not supported"
+#endif
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/kprobes.h>
@@ -11,9 +15,8 @@
 #define MAX_SYMBOL_LEN  64
 static char symbol[MAX_SYMBOL_LEN] = "bprm_execve";
 
-/* For each probe you need to allocate a kprobe structure */
 static struct kprobe kp = {
-    .symbol_name    = symbol,
+    .symbol_name = symbol,
 };
 
 static int __kprobes kprobe_pre_bprm(struct kprobe *p, struct pt_regs *regs) {
@@ -23,7 +26,6 @@ static int __kprobes kprobe_pre_bprm(struct kprobe *p, struct pt_regs *regs) {
 #elif /* !CONFIG_X86 */
 #error "Only x86 supported"
 #endif /* CONFIG_X86 */
-    /* A dump_stack() here will give a stack backtrace */
     return 0;
 }
 
