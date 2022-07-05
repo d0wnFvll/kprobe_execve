@@ -1,14 +1,15 @@
 #define pr_fmt(fmt) "%s: " fmt, __func__
 
-#if LINUX_VERSION_CODE < LINUX_VERSION(5, 9, 0)
-#error "Kernel versions less then 5.9.0 not supported"
-#endif
-
 #include <linux/kernel.h>
+#include <linux/version.h>
 #include <linux/module.h>
 #include <linux/kprobes.h>
 #include <linux/slab.h>
 #include <linux/highmem.h>
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
+#error "Kernel versions less than 5.9.0 not supported"
+#endif
 
 #include "argv.h"
 
